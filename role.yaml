@@ -1,0 +1,7 @@
+title: Snapshot Cleaner (v0)
+description: Snapshot Cleaner custom role
+stage: ALPHA
+includedPermissions:
+- compute.snapshots.delete
+- compute.snapshots.get
+- compute.snapshots.list
