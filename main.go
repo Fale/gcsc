@@ -8,7 +8,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"golang.org/x/oauth2/google"
 	compute "google.golang.org/api/compute/v1"
 )
 
@@ -50,12 +49,7 @@ var rootCmd = &cobra.Command{
 
 func clean(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
-	client, err := google.DefaultClient(ctx, compute.ComputeScope)
-	if err != nil {
-		return err
-	}
-
-	computeService, err := compute.New(client)
+	computeService, err := compute.NewService(ctx)
 	if err != nil {
 		return err
 	}
