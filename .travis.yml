@@ -2,10 +2,12 @@ language: go
 go:
   - 1.11.x
   - 1.12.x
+  - 1.13.x
   - master
 matrix:
   allow_failures:
     - go: master
+    - go: 1.13.x
 go_import_path: github.com/fale/google-cloud-snapshot-cleaner
 before_script:
   - go get github.com/golangci/golangci-lint/cmd/golangci-lint
