@@ -1,4 +1,4 @@
-module github.com/fale/google-cloud-snapshot-cleaner
+module github.com/fale/gcsc
 
 go 1.12
 

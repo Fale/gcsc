@@ -1,10 +1,10 @@
-# Google Cloud Snapshots Cleaner
+# GCSC (Google Cloud Snapshots Cleaner)
 
-Google Cloud Snapshots Cleaner allows you to clean up disk snapshots in Google Cloud based on some rules you set.
+GCSC allows you to clean up disk snapshots in Google Cloud based on some rules you set.
 
-[![Build Status](https://travis-ci.org/Fale/google-cloud-snapshot-cleaner.svg?branch=master)](https://travis-ci.org/kelfa/kelfa)
+[![Build Status](https://travis-ci.org/Fale/gcsc.svg?branch=master)](https://travis-ci.org/Fale/gcsc)
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/fale/google-cloud-snapshot-cleaner)](https://goreportcard.com/report/github.com/fale/google-cloud-snapshot-cleaner)
+[![Go Report Card](https://goreportcard.com/badge/github.com/fale/gcsc)](https://goreportcard.com/report/github.com/fale/gcsc)
 
 ## Create credentials
 In some cases credentials are not needed (ie: if the program runs on an GCE instance with appropriate Service Account).
@@ -24,7 +24,7 @@ If you are using a JSON credential, remember to export the `GOOGLE_APPLICATION_C
 ## Running the application
 You can run the application with:
 
-    ./google-cloud-snapshot-cleaner
+    ./gcsc
 
 ## Usage
 
