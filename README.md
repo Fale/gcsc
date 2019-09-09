@@ -21,6 +21,24 @@ If you are using a JSON credential, remember to export the `GOOGLE_APPLICATION_C
 
     export GOOGLE_APPLICATION_CREDENTIALS=~/key.json
 
+## Configuration file
+You should create a configuration file in `~/.gcsc/config.yaml` with a content similar to this:
+
+    project-id: your-gcp-project-id
+    retention-policies:
+      - begin: 0h
+        end: 168h # 7 days
+        cadence: 1h
+      - begin: 168h # 7 days
+        end: 226h # 14 days
+        cadence: 24h
+      - begin: 336h # 14 days
+        end: 1512h # 63 days
+        cadence: 168h # 7 days
+      - begin: 1512h # 63 days
+        end: 25512h # 1063 days
+        cadence: 24000h # 1000 days
+
 ## Running the application
 You can run the application with:
 

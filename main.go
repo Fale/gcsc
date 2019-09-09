@@ -4,17 +4,18 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	compute "google.golang.org/api/compute/v1"
 )
 
+var rps RetentionPolicies
+
 func init() {
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("config")
-	viper.AddConfigPath("$HOME/.snapshot-cleaner")
+	viper.AddConfigPath("$HOME/.gcsc")
 	_ = viper.ReadInConfig()
 
 	rootCmd.PersistentFlags().StringP("project-id", "p", "", "Google Cloud Project ID")
@@ -31,6 +32,10 @@ func init() {
 	}
 	rootCmd.PersistentFlags().Bool("manual", false, "Include manual backups")
 	if err := viper.BindPFlag("manual", rootCmd.PersistentFlags().Lookup("manual")); err != nil {
+		panic(err)
+	}
+	err := viper.UnmarshalKey("retention-policies", &rps)
+	if err != nil {
 		panic(err)
 	}
 }
@@ -71,29 +76,6 @@ func clean(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	// TODO: Make those configurable from config file
-	rps := RetentionPolicies{
-		RetentionPolicy{
-			Begin:   0 * 24 * time.Hour,
-			End:     7 * 24 * time.Hour,
-			Cadence: time.Hour,
-		},
-		RetentionPolicy{
-			Begin:   7 * 24 * time.Hour,
-			End:     14 * 24 * time.Hour,
-			Cadence: 24 * time.Hour,
-		},
-		RetentionPolicy{
-			Begin:   14 * 24 * time.Hour,
-			End:     63 * 24 * time.Hour,
-			Cadence: 7 * 24 * time.Hour,
-		},
-		RetentionPolicy{
-			Begin:   63 * 24 * time.Hour,
-			End:     1063 * 24 * time.Hour,
-			Cadence: 1000 * 24 * time.Hour,
-		},
-	}
 	var pss []compute.Snapshot
 	for _, d := range ds {
 		pss = append(pss, d.Purgeable(&rps)...)
