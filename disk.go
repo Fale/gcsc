@@ -29,7 +29,6 @@ type Disk struct {
 	Snapshots []compute.Snapshot
 }
 
-// TODO: Sort newer first
 func (d *Disk) Purgeable(rps *RetentionPolicies) []compute.Snapshot {
 	var ps []compute.Snapshot
 	now := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
