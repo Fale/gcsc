@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 
@@ -37,6 +38,9 @@ func init() {
 	err := viper.UnmarshalKey("retention-policies", &rps)
 	if err != nil {
 		panic(err)
+	}
+	if !rps.IsValid() {
+		panic(errors.New("the retention policies are not valid"))
 	}
 }
 

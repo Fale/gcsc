@@ -30,7 +30,7 @@ You should create a configuration file in `~/.gcsc/config.yaml` with a content s
         end: 168h # 7 days
         cadence: 1h
       - begin: 168h # 7 days
-        end: 226h # 14 days
+        end: 336h # 14 days
         cadence: 24h
       - begin: 336h # 14 days
         end: 1512h # 63 days
