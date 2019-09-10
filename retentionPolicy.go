@@ -13,6 +13,9 @@ func (r *RetentionPolicy) IsValid() bool {
 	if delta < 0 {
 		return false
 	}
+	if r.Cadence < 0 {
+		return false
+	}
 	if r.Cadence != 0 {
 		if div := delta % r.Cadence.Nanoseconds(); div != 0 {
 			return false
