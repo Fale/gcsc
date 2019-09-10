@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"time"
 
 	compute "google.golang.org/api/compute/v1"
@@ -37,6 +38,9 @@ func (d *Disk) Purgeable(rps *RetentionPolicies) []compute.Snapshot {
 		end := now.Add(-1 * rp.End)
 		for wb := begin; wb.After(end); wb = wb.Add(-1 * rp.Cadence) {
 			drop := false
+			sort.Slice(d.Snapshots, func(i, j int) bool {
+				return d.Snapshots[i].CreationTimestamp < d.Snapshots[j].CreationTimestamp
+			})
 			for _, s := range d.Snapshots {
 				ct, err := time.Parse("2006-01-02T15:04:05Z07:00", s.CreationTimestamp)
 				if err != nil {
