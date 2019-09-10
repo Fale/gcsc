@@ -78,7 +78,7 @@ func clean(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	var pss []compute.Snapshot
+	var pss []compute.Snapshot // nolint:prealloc
 	for _, d := range ds {
 		pss = append(pss, d.Purgeable(&rps)...)
 	}

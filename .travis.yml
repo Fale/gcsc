@@ -13,5 +13,5 @@ before_script:
   - go get github.com/golangci/golangci-lint/cmd/golangci-lint
   - go install github.com/golangci/golangci-lint/cmd/golangci-lint
 script:
-  - golangci-lint run --enable gosec
+  - golangci-lint run --enable-all
   - go test -v -race ./...
