@@ -13,7 +13,7 @@ import (
 
 var rps RetentionPolicies
 
-func init() {
+func main() {
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("config")
 	viper.AddConfigPath("$HOME/.gcsc")
@@ -42,9 +42,7 @@ func init() {
 	if !rps.IsValid() {
 		panic(errors.New("the retention policies are not valid"))
 	}
-}
 
-func main() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
