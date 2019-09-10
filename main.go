@@ -11,8 +11,6 @@ import (
 	compute "google.golang.org/api/compute/v1"
 )
 
-var rps RetentionPolicies
-
 func main() {
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("config")
@@ -40,13 +38,6 @@ func main() {
 	if err := viper.BindPFlag("manual", rootCmd.PersistentFlags().Lookup("manual")); err != nil {
 		panic(err)
 	}
-	err := viper.UnmarshalKey("retention-policies", &rps)
-	if err != nil {
-		panic(err)
-	}
-	if !rps.IsValid() {
-		panic(errors.New("the retention policies are not valid"))
-	}
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -55,6 +46,15 @@ func main() {
 }
 
 func clean(cmd *cobra.Command, args []string) error {
+	var rps RetentionPolicies
+	err := viper.UnmarshalKey("retention-policies", &rps)
+	if err != nil {
+		panic(err)
+	}
+	if !rps.IsValid() {
+		panic(errors.New("the retention policies are not valid"))
+	}
+
 	ctx := context.Background()
 	computeService, err := compute.NewService(ctx)
 	if err != nil {
