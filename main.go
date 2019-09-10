@@ -19,6 +19,11 @@ func main() {
 	viper.AddConfigPath("$HOME/.gcsc")
 	_ = viper.ReadInConfig()
 
+	var rootCmd = &cobra.Command{
+		Use:  "snapshot-cleaner",
+		RunE: clean,
+	}
+
 	rootCmd.PersistentFlags().StringP("project-id", "p", "", "Google Cloud Project ID")
 	if err := viper.BindPFlag("project-id", rootCmd.PersistentFlags().Lookup("project-id")); err != nil {
 		panic(err)
@@ -47,11 +52,6 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-}
-
-var rootCmd = &cobra.Command{
-	Use:  "snapshot-cleaner",
-	RunE: clean,
 }
 
 func clean(cmd *cobra.Command, args []string) error {
