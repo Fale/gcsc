@@ -17,24 +17,17 @@ func main() {
 	viper.AddConfigPath("$HOME/.gcsc")
 	_ = viper.ReadInConfig()
 
-	var rootCmd = &cobra.Command{
-		Use:  "snapshot-cleaner",
-		RunE: clean,
-	}
+	rootCmd := initCmd()
 
-	rootCmd.PersistentFlags().StringP("project-id", "p", "", "Google Cloud Project ID")
 	if err := viper.BindPFlag("project-id", rootCmd.PersistentFlags().Lookup("project-id")); err != nil {
 		panic(err)
 	}
-	rootCmd.PersistentFlags().Bool("dry-run", false, "Dry run mode")
 	if err := viper.BindPFlag("dry-run", rootCmd.PersistentFlags().Lookup("dry-run")); err != nil {
 		panic(err)
 	}
-	rootCmd.PersistentFlags().Bool("automatic", true, "Include automatic backups")
 	if err := viper.BindPFlag("automatic", rootCmd.PersistentFlags().Lookup("automatic")); err != nil {
 		panic(err)
 	}
-	rootCmd.PersistentFlags().Bool("manual", false, "Include manual backups")
 	if err := viper.BindPFlag("manual", rootCmd.PersistentFlags().Lookup("manual")); err != nil {
 		panic(err)
 	}
