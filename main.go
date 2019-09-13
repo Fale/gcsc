@@ -12,24 +12,10 @@ import (
 )
 
 func main() {
-	viper.SetConfigType("yaml")
-	viper.SetConfigName("config")
-	viper.AddConfigPath("$HOME/.gcsc")
-	_ = viper.ReadInConfig()
-
 	rootCmd := initCmd()
 
-	if err := viper.BindPFlag("project-id", rootCmd.PersistentFlags().Lookup("project-id")); err != nil {
-		panic(err)
-	}
-	if err := viper.BindPFlag("dry-run", rootCmd.PersistentFlags().Lookup("dry-run")); err != nil {
-		panic(err)
-	}
-	if err := viper.BindPFlag("automatic", rootCmd.PersistentFlags().Lookup("automatic")); err != nil {
-		panic(err)
-	}
-	if err := viper.BindPFlag("manual", rootCmd.PersistentFlags().Lookup("manual")); err != nil {
-		panic(err)
+	if err := config(rootCmd); err != nil {
+		fmt.Printf("an error occurred during configuration parsing: %v", err)
 	}
 
 	if err := rootCmd.Execute(); err != nil {
