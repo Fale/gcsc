@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -9,6 +11,11 @@ func config(rootCmd *cobra.Command) error {
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("config")
 	viper.AddConfigPath("$HOME/.gcsc")
+
+	viper.AutomaticEnv()
+	viper.SetEnvPrefix("gcsc")
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+
 	_ = viper.ReadInConfig()
 
 	if err := viper.BindPFlag("project-id", rootCmd.PersistentFlags().Lookup("project-id")); err != nil {
