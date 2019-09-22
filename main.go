@@ -22,8 +22,14 @@ func main() {
 		Short: "execute a cleaning",
 		RunE:  cleanFn,
 	}
-
 	rootCmd.AddCommand(cleanCmd)
+
+	var httpCmd = &cobra.Command{
+		Use:   "http",
+		Short: "listen to HTTP port",
+		RunE:  httpFn,
+	}
+	rootCmd.AddCommand(httpCmd)
 
 	if err := config(rootCmd); err != nil {
 		fmt.Printf("an error occurred during configuration parsing: %v", err)
