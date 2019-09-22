@@ -47,11 +47,18 @@ You can run the application with:
 ## Usage
 
     Usage:
-      snapshot-cleaner [flags]
+      snapshot-cleaner [command]
     
+    Available Commands:
+      clean       execute a cleaning
+      help        Help about any command
+      http        listen to HTTP port
+
     Flags:
           --automatic           Include automatic backups (default true)
           --dry-run             Dry run mode
       -h, --help                help for snapshot-cleaner
           --manual              Include manual backups
       -p, --project-id string   Google Cloud Project ID
+
+    Use "snapshot-cleaner [command] --help" for more information about a command.
