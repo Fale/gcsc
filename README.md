@@ -47,7 +47,7 @@ You can run the application with:
 ## Usage
 
     Usage:
-      snapshot-cleaner [command]
+      gcsc [command]
     
     Available Commands:
       clean       execute a cleaning

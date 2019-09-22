@@ -9,7 +9,7 @@ import (
 
 func main() {
 	var rootCmd = &cobra.Command{
-		Use: "snapshot-cleaner",
+		Use: "gcsc",
 	}
 
 	rootCmd.PersistentFlags().StringP("project-id", "p", "", "Google Cloud Project ID")
