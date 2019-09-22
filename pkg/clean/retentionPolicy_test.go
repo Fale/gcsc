@@ -1,17 +1,19 @@
-package main
+package clean_test
 
 import (
 	"testing"
 	"time"
+
+	"github.com/fale/gcsc/pkg/clean"
 )
 
 func TestDataBeginTime(t *testing.T) {
 	tests := []struct {
-		rp    RetentionPolicy
+		rp    clean.RetentionPolicy
 		valid bool
 	}{
 		{ // All zeros
-			rp: RetentionPolicy{
+			rp: clean.RetentionPolicy{
 				Begin:   0,
 				End:     0,
 				Cadence: 0,
@@ -19,7 +21,7 @@ func TestDataBeginTime(t *testing.T) {
 			valid: true,
 		},
 		{ // 1h slot, 1h cadence
-			rp: RetentionPolicy{
+			rp: clean.RetentionPolicy{
 				Begin:   0,
 				End:     time.Hour,
 				Cadence: time.Hour,
@@ -27,7 +29,7 @@ func TestDataBeginTime(t *testing.T) {
 			valid: true,
 		},
 		{ // 1h slot, 1h cadence
-			rp: RetentionPolicy{
+			rp: clean.RetentionPolicy{
 				Begin:   time.Hour,
 				End:     2 * time.Hour,
 				Cadence: time.Hour,
@@ -35,7 +37,7 @@ func TestDataBeginTime(t *testing.T) {
 			valid: true,
 		},
 		{ // 3h slot, 2h cadence
-			rp: RetentionPolicy{
+			rp: clean.RetentionPolicy{
 				Begin:   0,
 				End:     3 * time.Hour,
 				Cadence: 2 * time.Hour,
@@ -43,7 +45,7 @@ func TestDataBeginTime(t *testing.T) {
 			valid: false,
 		},
 		{ // negative cadence
-			rp: RetentionPolicy{
+			rp: clean.RetentionPolicy{
 				Begin:   0,
 				End:     time.Hour,
 				Cadence: -1 * time.Hour,

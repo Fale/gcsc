@@ -15,7 +15,7 @@ func initCmd() *cobra.Command {
 	var cleanCmd = &cobra.Command{
 		Use:   "clean",
 		Short: "execute a cleaning",
-		RunE:  clean,
+		RunE:  cleanFn,
 	}
 
 	rootCmd.AddCommand(cleanCmd)
