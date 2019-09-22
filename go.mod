@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	cloud.google.com/go v0.46.3 // indirect
+	github.com/golangci/golangci-lint v1.18.0 // indirect
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/magiconair/properties v1.8.1 // indirect
 	github.com/pelletier/go-toml v1.4.0 // indirect
