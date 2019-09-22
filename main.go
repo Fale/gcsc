@@ -5,13 +5,25 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-
-	"github.com/fale/gcsc/pkg/clean"
 )
 
 func main() {
-	rootCmd := initCmd()
+	var rootCmd = &cobra.Command{
+		Use: "snapshot-cleaner",
+	}
+
+	rootCmd.PersistentFlags().StringP("project-id", "p", "", "Google Cloud Project ID")
+	rootCmd.PersistentFlags().Bool("dry-run", false, "Dry run mode")
+	rootCmd.PersistentFlags().Bool("automatic", true, "Include automatic backups")
+	rootCmd.PersistentFlags().Bool("manual", false, "Include manual backups")
+
+	var cleanCmd = &cobra.Command{
+		Use:   "clean",
+		Short: "execute a cleaning",
+		RunE:  cleanFn,
+	}
+
+	rootCmd.AddCommand(cleanCmd)
 
 	if err := config(rootCmd); err != nil {
 		fmt.Printf("an error occurred during configuration parsing: %v", err)
@@ -21,18 +33,4 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-}
-
-func cleanFn(cmd *cobra.Command, args []string) error {
-	p := clean.Parameters{
-		ProjectID:          viper.GetString("project-id"),
-		CleanAutoBackups:   viper.GetBool("automatic"),
-		CleanManualBackups: viper.GetBool("manual"),
-		DryRun:             viper.GetBool("dry-run"),
-	}
-	err := viper.UnmarshalKey("retention-policies", &p.RetentionPolicies)
-	if err != nil {
-		panic(err)
-	}
-	return clean.Execute(p)
 }
