@@ -14,8 +14,8 @@ func main() {
 
 	rootCmd.PersistentFlags().StringP("project-id", "p", "", "Google Cloud Project ID")
 	rootCmd.PersistentFlags().Bool("dry-run", false, "Dry run mode")
-	rootCmd.PersistentFlags().Bool("automatic", true, "Include automatic backups")
-	rootCmd.PersistentFlags().Bool("manual", false, "Include manual backups")
+	rootCmd.PersistentFlags().Bool("automatic", true, "Include automatic snapshots")
+	rootCmd.PersistentFlags().Bool("manual", false, "Include manual snapshots")
 
 	var cleanCmd = &cobra.Command{
 		Use:   "clean",

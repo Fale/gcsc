@@ -55,10 +55,10 @@ You can run the application with:
       http        listen to HTTP port
 
     Flags:
-          --automatic           Include automatic backups (default true)
+          --automatic           Include automatic snapshots (default true)
           --dry-run             Dry run mode
-      -h, --help                help for snapshot-cleaner
-          --manual              Include manual backups
+      -h, --help                help for gcsc
+          --manual              Include manual snapshots
       -p, --project-id string   Google Cloud Project ID
 
     Use "snapshot-cleaner [command] --help" for more information about a command.
