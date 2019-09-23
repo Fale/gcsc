@@ -61,4 +61,4 @@ You can run the application with:
           --manual              Include manual snapshots
       -p, --project-id string   Google Cloud Project ID
 
-    Use "snapshot-cleaner [command] --help" for more information about a command.
+    Use "gcsc [command] --help" for more information about a command.
