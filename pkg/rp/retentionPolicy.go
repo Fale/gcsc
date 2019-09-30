@@ -15,7 +15,7 @@
  * along with GCSC. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package clean
+package rp
 
 import "time"
 

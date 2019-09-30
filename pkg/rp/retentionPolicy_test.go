@@ -15,22 +15,22 @@
  * along with GCSC. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package clean_test
+package rp_test
 
 import (
 	"testing"
 	"time"
 
-	"github.com/fale/gcsc/pkg/clean"
+	"github.com/fale/gcsc/pkg/rp"
 )
 
 func TestDataBeginTime(t *testing.T) {
 	tests := []struct {
-		rp    clean.RetentionPolicy
+		rp    rp.RetentionPolicy
 		valid bool
 	}{
 		{ // All zeros
-			rp: clean.RetentionPolicy{
+			rp: rp.RetentionPolicy{
 				Begin:   0,
 				End:     0,
 				Cadence: 0,
@@ -38,7 +38,7 @@ func TestDataBeginTime(t *testing.T) {
 			valid: true,
 		},
 		{ // 1h slot, 1h cadence
-			rp: clean.RetentionPolicy{
+			rp: rp.RetentionPolicy{
 				Begin:   0,
 				End:     time.Hour,
 				Cadence: time.Hour,
@@ -46,7 +46,7 @@ func TestDataBeginTime(t *testing.T) {
 			valid: true,
 		},
 		{ // 1h slot, 1h cadence
-			rp: clean.RetentionPolicy{
+			rp: rp.RetentionPolicy{
 				Begin:   time.Hour,
 				End:     2 * time.Hour,
 				Cadence: time.Hour,
@@ -54,7 +54,7 @@ func TestDataBeginTime(t *testing.T) {
 			valid: true,
 		},
 		{ // 3h slot, 2h cadence
-			rp: clean.RetentionPolicy{
+			rp: rp.RetentionPolicy{
 				Begin:   0,
 				End:     3 * time.Hour,
 				Cadence: 2 * time.Hour,
@@ -62,7 +62,7 @@ func TestDataBeginTime(t *testing.T) {
 			valid: false,
 		},
 		{ // negative cadence
-			rp: clean.RetentionPolicy{
+			rp: rp.RetentionPolicy{
 				Begin:   0,
 				End:     time.Hour,
 				Cadence: -1 * time.Hour,

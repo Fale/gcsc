@@ -19,8 +19,11 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
+	"github.com/fale/gcsc/pkg/clean"
+	"github.com/fale/gcsc/pkg/config"
 	"github.com/spf13/cobra"
 )
 
@@ -37,20 +40,34 @@ func main() {
 	var cleanCmd = &cobra.Command{
 		Use:   "clean",
 		Short: "execute a cleaning",
-		RunE:  cleanFn,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			configs, err := config.Load(rootCmd)
+			if err != nil {
+				fmt.Printf("an error occurred during configuration parsing: %v", err)
+			}
+			return clean.Execute(configs)
+		},
 	}
 	rootCmd.AddCommand(cleanCmd)
 
 	var httpCmd = &cobra.Command{
 		Use:   "http",
 		Short: "listen to HTTP port",
-		RunE:  httpFn,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			configs, err := config.Load(rootCmd)
+			if err != nil {
+				fmt.Printf("an error occurred during configuration parsing: %v", err)
+			}
+			http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+				err := clean.Execute(configs)
+				if err != nil {
+					fmt.Fprintf(w, "an error occurred: %v", err)
+				}
+			})
+			return http.ListenAndServe(":8080", nil)
+		},
 	}
 	rootCmd.AddCommand(httpCmd)
-
-	if err := config(rootCmd); err != nil {
-		fmt.Printf("an error occurred during configuration parsing: %v", err)
-	}
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)

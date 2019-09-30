@@ -22,19 +22,12 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/fale/gcsc/pkg/config"
 	compute "google.golang.org/api/compute/v1"
 )
 
-type Parameters struct {
-	ProjectID          string
-	CleanAutoBackups   bool
-	CleanManualBackups bool
-	DryRun             bool
-	RetentionPolicies  RetentionPolicies
-}
-
-func Execute(p Parameters) error {
-	if !p.RetentionPolicies.IsValid() {
+func Execute(c *config.Config) error {
+	if !c.RetentionPolicies.IsValid() {
 		panic(errors.New("the retention policies are not valid"))
 	}
 
@@ -45,12 +38,12 @@ func Execute(p Parameters) error {
 	}
 
 	var ds Disks
-	err = computeService.Snapshots.List(p.ProjectID).Pages(ctx, func(ss *compute.SnapshotList) error {
+	err = computeService.Snapshots.List(c.ProjectID).Pages(ctx, func(ss *compute.SnapshotList) error {
 		for _, s := range ss.Items {
-			if s.AutoCreated && p.CleanAutoBackups {
+			if s.AutoCreated && c.Automatic {
 				ds.AddSnapshot(*s)
 			}
-			if !s.AutoCreated && p.CleanManualBackups {
+			if !s.AutoCreated && c.Manual {
 				ds.AddSnapshot(*s)
 			}
 		}
@@ -63,12 +56,12 @@ func Execute(p Parameters) error {
 
 	var pss []compute.Snapshot // nolint:prealloc
 	for _, d := range ds {
-		pss = append(pss, d.Purgeable(&p.RetentionPolicies)...)
+		pss = append(pss, d.Purgeable(&c.RetentionPolicies)...)
 	}
 	for _, ps := range pss {
 		fmt.Printf("Deleting %s\n", ps.Name)
-		if !p.DryRun {
-			_, err = computeService.Snapshots.Delete(p.ProjectID, ps.Name).Do()
+		if !c.DryRun {
+			_, err = computeService.Snapshots.Delete(c.ProjectID, ps.Name).Do()
 			if err != nil {
 				fmt.Println(err)
 				return nil

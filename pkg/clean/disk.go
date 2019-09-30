@@ -22,6 +22,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/fale/gcsc/pkg/rp"
 	compute "google.golang.org/api/compute/v1"
 )
 
@@ -47,7 +48,7 @@ type Disk struct {
 	Snapshots []compute.Snapshot
 }
 
-func (d *Disk) Purgeable(rps *RetentionPolicies) []compute.Snapshot {
+func (d *Disk) Purgeable(rps *rp.RetentionPolicies) []compute.Snapshot {
 	var ps []compute.Snapshot
 	now := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
 	for _, rp := range *rps {
