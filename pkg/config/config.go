@@ -42,12 +42,13 @@ func Load(cmd *cobra.Command) (*Config, error) {
 	v.SetEnvPrefix("gcsc")
 	v.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 
-	err := v.ReadInConfig()
-	if err != nil {
+	if err := v.ReadInConfig(); err != nil {
 		return nil, err
 	}
 
-	v.BindPFlags(cmd.PersistentFlags())
+	if err := v.BindPFlags(cmd.PersistentFlags()); err != nil {
+		return nil, err
+	}
 
 	c := &Config{}
 	if err := v.Unmarshal(c); err != nil {
