@@ -37,6 +37,16 @@ func main() {
 	rootCmd.PersistentFlags().Bool("automatic", true, "Include automatic snapshots")
 	rootCmd.PersistentFlags().Bool("manual", false, "Include manual snapshots")
 
+	cleanCmdGenerator(rootCmd)
+	httpCmdGenerator(rootCmd)
+
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+
+func cleanCmdGenerator(rootCmd *cobra.Command) {
 	var cleanCmd = &cobra.Command{
 		Use:   "clean",
 		Short: "execute a cleaning",
@@ -49,8 +59,10 @@ func main() {
 		},
 	}
 	rootCmd.AddCommand(cleanCmd)
+}
 
-	var httpCmd = &cobra.Command{
+func httpCmdGenerator(rootCmd *cobra.Command) {
+	httpCmd := &cobra.Command{
 		Use:   "http",
 		Short: "listen to HTTP port",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -68,9 +80,4 @@ func main() {
 		},
 	}
 	rootCmd.AddCommand(httpCmd)
-
-	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
 }
