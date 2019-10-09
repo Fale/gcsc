@@ -9,7 +9,7 @@ before_script:
   - go get github.com/golangci/golangci-lint/cmd/golangci-lint
   - go install github.com/golangci/golangci-lint/cmd/golangci-lint
 script:
-  - golangci-lint run --enable-all
+  - golangci-lint run --enable-all --disable wsl
   - go test -v -race ./...
 deploy:
   - provider: script
