@@ -26,6 +26,7 @@ import (
 	compute "google.golang.org/api/compute/v1"
 )
 
+// Execute performs the needed operations to evaluate which snapshots should be pruned and to prune them
 func Execute(c *config.Config) error {
 	if !c.RetentionPolicies.IsValid() {
 		panic(errors.New("the retention policies are not valid"))

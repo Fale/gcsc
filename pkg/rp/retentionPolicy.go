@@ -19,12 +19,17 @@ package rp
 
 import "time"
 
+// RetentionPolicy is an object to describe a retention policy.
 type RetentionPolicy struct {
-	Begin   time.Duration
-	End     time.Duration
+	// Begin of the retention policy window, thinking from today backward
+	Begin time.Duration
+	// End of the retention policy window, thinking from today backward
+	End time.Duration
+	// Cadence of the expected backup sequence
 	Cadence time.Duration
 }
 
+// IsValid validates that the RetentionPolicy is formally correct
 func (r *RetentionPolicy) IsValid() bool {
 	delta := r.End.Nanoseconds() - r.Begin.Nanoseconds()
 	if delta < 0 {
@@ -41,8 +46,10 @@ func (r *RetentionPolicy) IsValid() bool {
 	return true
 }
 
+// RetentionPolicies is used to aggregate multiple RetentionPolicy windows
 type RetentionPolicies []RetentionPolicy
 
+//IsValid validates that the RetentionPolicies set is formally correct
 func (rs *RetentionPolicies) IsValid() bool {
 	for _, r := range *rs {
 		if !r.IsValid() {

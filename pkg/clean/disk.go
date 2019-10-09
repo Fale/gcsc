@@ -26,8 +26,13 @@ import (
 	compute "google.golang.org/api/compute/v1"
 )
 
+// Disks contains an array of disks to be processed
 type Disks []Disk
 
+// AddSnapshot allows to add a Snapshot to a Disks collection if the snapshot
+// refers to a disk that is already present in the collection, a snapshot will
+// be added to that disk. If the referred disk is not in the collection, it
+// will be added.
 func (ds *Disks) AddSnapshot(s compute.Snapshot) {
 	for k, d := range *ds {
 		if d.ID == s.SourceDiskId {
@@ -42,12 +47,18 @@ func (ds *Disks) AddSnapshot(s compute.Snapshot) {
 	})
 }
 
+// Disk is used to store basic information about a disk and its snapshots
 type Disk struct {
-	Name      string
-	ID        string
+	// Then name of the disk
+	Name string
+	// The GCP resource ID of the disk
+	ID string
+	// The list of snapshots of the disk
 	Snapshots []compute.Snapshot
 }
 
+// Purgeable returns a list of snapshots that should be purged to complain with
+// the passed retention policies
 func (d *Disk) Purgeable(rps *rp.RetentionPolicies) []compute.Snapshot {
 	var ps []compute.Snapshot
 	now := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)

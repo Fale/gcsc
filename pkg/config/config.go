@@ -25,14 +25,22 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Config is used to provide the configuration to GCSC application
 type Config struct {
-	ProjectID         string               `mapstructure:"project-id"`
+	// GCP Project ID to operate on
+	ProjectID string `mapstructure:"project-id"`
+	// A set of RetentionPolicy to apply to the snapshots
 	RetentionPolicies rp.RetentionPolicies `mapstructure:"retention-policies"`
-	Automatic         bool                 `mapstructure:"automatic"`
-	Manual            bool                 `mapstructure:"manual"`
-	DryRun            bool                 `mapstructure:"dry-run"`
+	// Include automatically generated snapshot in the calculations and pruning
+	Automatic bool `mapstructure:"automatic"`
+	// Include manually generated snapshots in the calculations and pruning
+	Manual bool `mapstructure:"manual"`
+	// Do not perform any real operations
+	DryRun bool `mapstructure:"dry-run"`
 }
 
+// Load returns a Config item with the values gathered from the configurations
+// file, or the CLI or the ENV VARS
 func Load(cmd *cobra.Command) (*Config, error) {
 	v := viper.New()
 	v.SetConfigName("config")
